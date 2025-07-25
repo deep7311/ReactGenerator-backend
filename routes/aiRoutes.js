@@ -1,9 +1,10 @@
 import express from "express";
-import { generateComponent } from "../controllers/aiController.js";
+import { generateComponent, refineComponent } from "../controllers/aiController.js";
 import protect from "../middlewares/protect.js";
 
 const router = express.Router();
 
-router.post("/generate", protect, generateComponent);
+router.post("/generate", generateComponent);
+router.post("/refine", refineComponent);
 
 export default router;
