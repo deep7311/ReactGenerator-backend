@@ -1,16 +1,28 @@
 import express from "express";
+import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import connectDB from "./config/db.js";
 import cors from "cors";
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
 import sessionRoutes from "./routes/sessionRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
-
 dotenv.config();
 const app = express();
+
+
+const dbuser = encodeURIComponent(process.env.DB_USER);
+const dbpass = encodeURIComponent(process.env.DB_PASS);
+
+
+mongoose.connect(`mongodb+srv://${dbuser}:${dbpass}@cluster0.th1jcvn.mongodb.net/reactGenerator?retryWrites=true&w=majority&appName=Cluster0`).then(() => {
+  console.log("Connected to MongoDB");
+  app.listen(process.env.PORT, () => {
+    console.log(`Server started at Port ${process.env.PORT}`);
+  });
+});
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -36,8 +48,3 @@ app.get("/", (req, res) => {
   res.send("Hello World My API is running...");
 });
 
-app.listen(process.env.PORT, () => {
-  // MongoDB
-  connectDB();
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
